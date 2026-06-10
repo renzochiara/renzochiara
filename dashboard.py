@@ -1,6 +1,6 @@
 import os
 import streamlit as st
-from mistralai.client import MistralClient
+from mistralai import Mistral
 from mistralai.models.chat_completion import ChatMessage
 import pandas as pd
 from openpyxl import load_workbook
@@ -12,7 +12,7 @@ load_dotenv()
 MISTRAL_API_KEY = os.getenv("MISTRAL_API_KEY")
 
 # Initialize Mistral client
-client = MistralClient(api_key=MISTRAL_API_KEY)
+client = Mistral(api_key=MISTRAL_API_KEY)
 
 # --- Streamlit App ---
 st.set_page_config(page_title="MyVita Budget Dashboard", layout="wide")
@@ -48,9 +48,9 @@ else:
         user_input = st.text_input("Ask me anything or request a workflow:")
         if user_input:
             response = client.chat(
-                model="mistral-medium",
-                messages=[ChatMessage(role="user", content=user_input)]
-            )
+    model="mistral-medium",
+    messages=[{"role": "user", "content": user_input}]
+)
             st.write("**Mistral AI:**")
             st.write(response.choices[0].message.content)
 
